@@ -1,0 +1,87 @@
+header {
+    width: 100%;
+    left: 0;
+    z-index: 10;
+    top: 0;
+    position: relative;
+    background-color: #000c75;
+    font-family: sans-serif;
+
+    color: #FFFFFF;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-evenly;
+    flex: 1;
+    text-align: center;
+}
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    color: #101F27;
+
+}
+
+#mainTable {
+    background-color: azure;
+    min-width: fit-content;
+    width: 80%;
+    margin: 0 auto;
+    border-color: #101F27;
+    border-style: solid;
+    border-top: azure;
+    align-items: center;
+    border-width: 2px;
+    display: grid;
+    grid-auto-rows: auto;
+}
+
+#mainTable > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+td {
+    padding-bottom: 20px;
+}
+
+#inputForm {
+    margin-left: 15px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 90%;
+    max-width: 1200px;
+    margin-bottom: 2rem;
+}
+
+#resultTable {
+    background-color: #d8d8d8;
+}
+
+#resultTable th, #resultTable td {
+    border: 1px solid #111;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+#resultTable tr {
+    border-top: 1px solid #333;
+}
+
+#resultTable tr:first-of-type {
+    border-top: none;
+}
+
+#resultTable {
+    table-layout: auto;
+    margin-left: auto;
+    margin-right: auto;
+}                                        

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>web3</title>
+    <link rel="stylesheet" href="styles/main.css" type="text/css"/>
+    <link rel="stylesheet" href="styles/all.css" type="text/css"/>
+</h:head>
+
+<h:body>
+
+
+
+    <header>
+        <h3>Багманов Владимир Алексеевич</h3>
+        <h3>группа P3230</h3>
+        <h3>вариант 887766</h3>
+
+    </header>
+    <h:form id="start_page">
+        <h:commandButton value="посмотреть время" action="index.xhtml"/>
+    </h:form>
+    <div id="upper-container" class="first-row">
+        <h:form id="inputForm">
+            <h:panelGrid columns="4">
+                <h:outputLabel for="xValue" value="Введите X:" />
+
+                <p:selectOneMenu class="x-checker" id="xValue" value="#{pointBean.x}" required="true" requiredMessage="Выберите значение X">
+                    <f:selectItem itemValue="4.0" itemLabel="4.0"/>
+                    <f:selectItem itemValue="3.0" itemLabel="3.0"/>
+                    <f:selectItem itemValue="2.0" itemLabel="2.0"/>
+                    <f:selectItem itemValue="1.0" itemLabel="1.0"/>
+                    <f:selectItem itemValue="0.0" itemLabel="0.0"/>
+                    <f:selectItem itemValue="-1.0" itemLabel="-1.0"/>
+                    <f:selectItem itemValue="-2.0" itemLabel="-2.0"/>
+                    <f:selectItem itemValue="-3.0" itemLabel="-3.0"/>
+                    <f:selectItem itemValue="-4.0" itemLabel="-4.0"/>
+                    <f:ajax event="change" render="x_value" />
+                </p:selectOneMenu>
+                <h:inputText class="input_x" id="x_value" value="#{pointBean.x}" required="true" style="display: none">
+                    <f:validateDoubleRange minimum="-4.0" maximum="4.0" />
+                </h:inputText>
+            </h:panelGrid>
+
+            <h:panelGrid columns="2" style="margin-bottom: 20px;">
+                <h:outputLabel for="yValue" value="Введите Y:" />
+                <h:inputText id="yValue" value="#{pointBean.y}" validatorMessage="Значение Y должно между -5 и 3" converterMessage="Y должен быть числом"
+                             maxValue="3" minValue="-5" decimalSeparator="." styleClass="y-value" placeholder="(от -5 до 3)">
+                    <f:validateDoubleRange minimum="-5" maximum="3"/>
+                    <f:ajax event="change" execute="@this"/>
+                </h:inputText>
+                <h:message for="yValue" style="color: red;" value="Y от -3 до 5">Y от -3 до 5</h:message>
+            </h:panelGrid>
+
+            <h:panelGrid columns="6" id="r-input">
+                <h:outputLabel value="Введите R:"/>
+                <h:commandLink value="1" styleClass="#{pointBean.r == 1 ? 'x-link active' : 'x-link'}" action="redraw()">
+                    <f:ajax render="r-input" />
+                    <f:setPropertyActionListener target="#{pointBean.r}" value="1" />
+                </h:commandLink>
+                <h:commandLink value="1.5" styleClass="#{pointBean.r == 1.5 ? 'x-link active' : 'x-link'}" action="redraw()">
+                    <f:ajax render="r-input" />
+                    <f:setPropertyActionListener target="#{pointBean.r}" value="1.5" />
+                </h:commandLink>
+                <h:commandLink value="2" styleClass="#{pointBean.r == 2 ? 'x-link active' : 'x-link'}" action="redraw()">
+                    <f:ajax render="r-input" />
+                    <f:setPropertyActionListener target="#{pointBean.r}" value="2" />
+                </h:commandLink>
+                <h:commandLink value="2.5" styleClass="#{pointBean.r == 2.5 ? 'x-link active' : 'x-link'}" action="redraw()">
+                    <f:ajax render="r-input" />
+                    <f:setPropertyActionListener target="#{pointBean.r}" value="2.5" />
+                </h:commandLink>
+                <h:commandLink value="3" styleClass="#{pointBean.r == 3 ? 'x-link active' : 'x-link'}" action="redraw()">
+                    <f:ajax render="r-input" />
+                    <f:setPropertyActionListener target="#{pointBean.r}" value="3" />
+                </h:commandLink>
+
+                <p:inputText id="rValue" value="#{pointBean.r}" style="margin-bottom: 20px; display: none"  required="true">
+                    <f:validateDoubleRange minimum="1" maximum="3"/>
+                </p:inputText>
+
+            </h:panelGrid>
+
+            <h:commandButton id="submit_button" value="Отправить" action="redraw()">
+                <f:ajax execute="@form" listener="#{formBean.processForm(pointBean)}" event="click" render="resultTable"/>
+            </h:commandButton>
+            <div id="message">
+
+            </div>
+        </h:form>
+        <div>
+            <canvas id="picture" width="400" height="400">
+            </canvas>
+        </div>
+    </div>
+    <h:dataTable class="resTable" id="resultTable" value="#{resultBean.results}" var="point" border="1">
+        <h:column>
+            <f:facet name="header">X</f:facet>
+            <h:outputText value="#{point.x}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">Y</f:facet>
+            <h:outputText value="#{point.y}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="R" />
+            </f:facet>
+            <h:outputText value="#{point.r}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="Result" />
+            </f:facet>
+            <h:outputText value="#{point.result ? 'Hit' : 'Miss'}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="Execution Time" />
+            </f:facet>
+            <h:outputText value="#{point.timeWork}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="Current Time" />
+            </f:facet>
+            <h:outputText value="#{point.convCreationTime}">
+            </h:outputText>
+        </h:column>
+    </h:dataTable>
+
+    <script type="text/javascript" src="js/picture.js"> </script>
+</h:body>
+</html>
