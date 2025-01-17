@@ -1,35 +1,28 @@
 package beans;
 
 
-import jakarta.enterprise.context.SessionScoped;
-import jakarta.inject.Named;
-import validation.Validator;
+import database.Result;
+import database.User;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-@SessionScoped
-@Named("resultBean")
-public class ResultBean implements Serializable {
-    private final List<Result> results = Collections.synchronizedList(new ArrayList<>());
+@Stateless
+public class ResultBean {
 
-    public List<Result> getResults() {
-        results.forEach(System.out::println);
-        return results;
+    @EJB
+    PointDBBean pointDBBean;
+
+    @EJB
+    AuthBean authBean;
+
+    public Result addResult(int userId, Float x, Float y, Float r, Long timestart) {
+        return pointDBBean.createPoint(x, y, r, userId, timestart);
     }
 
-    public void addResult(Result point) {
-        results.add(point);
-    }
-    public void updatePoints(float radius) {
-        for (Result point : results) {
-            point.setR(radius);
-            point.setResult(Validator.check(point));
-        }
-    }
-    public void clearPoints() {
-        results.clear();
+    public List getResults(int userId) {
+        User user = authBean.getUserById(userId);
+        return pointDBBean.getByOwner(user.getId());
     }
 }

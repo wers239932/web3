@@ -1,30 +1,30 @@
-package beans;
+package database;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Named;
 import jakarta.persistence.*;
+import validation.Validatable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
-@Named("pointBean")
 @Entity
 @Table(name = "result")
-@RequestScoped
 public class Result implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Validatable(min = -5, max = 3)
     @Column(name = "x", nullable = false)
     private float x;
 
+    @Validatable(min = -5, max = 5)
     @Column(name = "y", nullable = false)
     private float y;
 
+    @Validatable(min = 1, max = 3)
     @Column(name = "r", nullable = false)
     private float r;
 
@@ -36,6 +36,9 @@ public class Result implements Serializable {
 
     @Column(name = "timeWork", nullable = false)
     private long timeWork;
+
+    @Column(name = "owner_id")
+    private Integer ownerId;
 
 
     @Override
@@ -83,6 +86,10 @@ public class Result implements Serializable {
         return creationTime;
     }
 
+    public Integer getOwnerId() {
+        return ownerId;
+    }
+
     public void setResult(boolean result) {
         this.result = result;
     }
@@ -113,5 +120,9 @@ public class Result implements Serializable {
 
     public String getConvCreationTime() {
         return creationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
     }
 }
