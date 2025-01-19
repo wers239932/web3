@@ -12,7 +12,7 @@ public class User {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "paswd_hash")
+    @Column(name = "passwd_hash")
     private String passwd_hash;
 
     @Column(name = "access_token")
