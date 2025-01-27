@@ -7,7 +7,7 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://postgres:5432/web3</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/web3</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">251637</property>
         <property name="hbm2ddl.auto">update</property>

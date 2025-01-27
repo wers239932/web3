@@ -13,7 +13,10 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.SecurityContext;
+import jwt.JWTUtil;
 
 import java.util.List;
 
@@ -25,6 +28,9 @@ public class getPoints {
     @EJB
     private AuthBean authBean;
 
+    @Context
+    private SecurityContext securityContext;
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -35,7 +41,11 @@ public class getPoints {
         try {
             ObjectNode response = mapper.createObjectNode();
             JsonNode node = mapper.readTree(json);
-            token = node.get("token").asInt();
+
+            token = Integer.parseInt(securityContext.getUserPrincipal().getName());
+            System.out.println(token);
+
+            //token = node.get("token").asInt();
 
             if(!authBean.isLoggedIn(token)) {
                 response.put("status", "error");

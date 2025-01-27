@@ -10,12 +10,17 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.SecurityContext;
 
 @Path("/logout")
 public class Logout {
     @EJB
     private AuthBean authBean;
+
+    @Context
+    private SecurityContext securityContext;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -24,7 +29,8 @@ public class Logout {
         ObjectMapper mapper = new ObjectMapper();
         try {
             JsonNode node = mapper.readTree(json);
-            Integer token = node.get("token").asInt();
+            //Integer token = node.get("token").asInt();
+            Integer token = Integer.parseInt(securityContext.getUserPrincipal().getName());
             authBean.logout(token);
 
             ObjectNode response = mapper.createObjectNode();

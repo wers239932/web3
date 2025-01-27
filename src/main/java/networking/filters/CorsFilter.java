@@ -1,6 +1,7 @@
 package networking.filters;
 
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
@@ -18,8 +19,12 @@ public class CorsFilter implements ContainerResponseFilter {
         if (!responseContext.getHeaders().containsKey("Access-Control-Allow-Origin")) {
             responseContext.getHeaders().add("Access-Control-Allow-Origin", "http://localhost:3000");
             responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-            responseContext.getHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            responseContext.getHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization, jwt_token");
             responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
+        }
+        if ("OPTIONS".equalsIgnoreCase(requestContext.getMethod())) {
+            responseContext.setStatus(HttpServletResponse.SC_OK);
+            return;
         }
     }
 }
